@@ -1,5 +1,6 @@
 package com.github.quiz;
 
+import javax.swing.*;
 import java.awt.EventQueue;
 
 /**
@@ -11,8 +12,13 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 GUI gui = new GUI();
-                gui.setVisible(true);
+                gui.panel.setVisible(true);
             }
         });
     }

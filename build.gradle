@@ -7,11 +7,17 @@ mainClassName = "com.github.quiz.Main"
 
 repositories {
     mavenCentral()
+
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    compile group: 'com.miglayout', name: 'miglayout-swing', version: '5.0-SNAPSHOT'
+    compile group: 'com.jgoodies', name: 'looks', version: '2.2.2'
 }
 
 jar {
