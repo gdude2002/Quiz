@@ -3,28 +3,27 @@ package com.github.quiz;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 public class GUI {
     // GUI components
-    JFrame window;  // Main window
-    JPanel statusBar;  // Status bar
+    private final JFrame window;  // Main window
+    private JPanel statusBar;  // Status bar
 
-    JLabel questionLabel;  // Current question
+    private JLabel questionLabel;  // Current question
 
-    JButton startButton;  // "Start" button
-    JButton finishButton;  // "Finish" button
+    private JButton startButton;  // "Start" button
+    private JButton finishButton;  // "Finish" button
 
-    JButton answerButton1;  // First answer
-    JButton answerButton2;  // Second answer
-    JButton answerButton3;  // Third answer
-    JButton answerButton4;  // Fourth answer
+    private JButton answerButton1;  // First answer
+    private JButton answerButton2;  // Second answer
+    private JButton answerButton3;  // Third answer
+    private JButton answerButton4;  // Fourth answer
 
-    JProgressBar progressBar;  // Quiz progress bar
-    JProgressBar correctProgress;  // Progress bar for correct answers
-    JProgressBar incorrectProgress;  // Progress bar for incorrect answers
+    private JProgressBar progressBar;  // Quiz progress bar
+    private JProgressBar correctProgress;  // Progress bar for correct answers
+    private JProgressBar incorrectProgress;  // Progress bar for incorrect answers
 
     // Logic
 

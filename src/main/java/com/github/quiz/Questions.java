@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Questions {
-    public final HashMap<String, HashMap<String, Object>> questions;
+    private final HashMap<String, HashMap<String, Object>> questions;
 
     public Questions() {
         this.questions = new HashMap<>();
