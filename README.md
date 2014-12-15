@@ -3,6 +3,8 @@ Quiz
 
 Class project. A simple question-and-answers-based quiz with a crappy GUI.
 
+![](http://i.imgur.com/9vqH2IJ.png)
+
 Usage
 =====
 
