@@ -18,7 +18,6 @@ public class Main {
                     e.printStackTrace();
                 }
                 GUI gui = new GUI();
-                gui.window.setVisible(true);
             }
         });
     }

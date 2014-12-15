@@ -3,6 +3,7 @@ package com.github.quiz;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GUI {
     // GUI components
@@ -20,6 +21,8 @@ public class GUI {
     JButton answerButton4;  // Fourth answer
 
     JProgressBar progressBar;  // Quiz progress bar
+    JProgressBar correctProgress;  // Progress bar for correct answers
+    JProgressBar incorrectProgress;  // Progress bar for incorrect answers
 
     // Logic
 
@@ -27,18 +30,20 @@ public class GUI {
         this.window = new JFrame();
         this.window.setLayout(new MigLayout(
                 "insets 10",
-                "[grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow]"  // Please
+                "[grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow]"  // Please
         ));
         this.window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.window.setTitle("Quiz");
-        this.window.setSize(600, 600);
+        this.window.setSize(750, 164);
+        this.window.setResizable(false);
+        this.window.setLocationRelativeTo(null);
 
         this.initUI();
     }
 
     public void initUI(){
         // Initialize components
-        this.statusBar = new JPanel(new MigLayout("", "[grow]"));
+        this.statusBar = new JPanel(new MigLayout("", "[grow][grow][grow]"));
 
         this.questionLabel = new JLabel("Click 'start' to begin!");
 
@@ -50,7 +55,9 @@ public class GUI {
         this.answerButton3 = new JButton("???");
         this.answerButton4 = new JButton("???");
 
+        this.correctProgress = new JProgressBar(0, 10);
         this.progressBar = new JProgressBar(0, 10);
+        this.incorrectProgress = new JProgressBar(0, 10);
 
         // Set component defaults
 
@@ -61,23 +68,40 @@ public class GUI {
         this.answerButton3.setEnabled(false);
         this.answerButton4.setEnabled(false);
 
+        this.correctProgress.setStringPainted(true);
         this.progressBar.setStringPainted(true);
+        this.incorrectProgress.setStringPainted(true);
+
+        this.correctProgress.setForeground(Color.GREEN);
+        this.incorrectProgress.setForeground(Color.RED);
 
         // Add components to their containers
 
         this.statusBar.setSize(600, 50);
+        this.statusBar.add(this.correctProgress, "grow");
         this.statusBar.add(this.progressBar, "grow");
+        this.statusBar.add(this.incorrectProgress, "grow");
 
         /// Row 1: Question label and start/finish buttons
 
-        this.window.add(this.questionLabel, "align center, span 14, grow");
-        this.window.add(this.startButton, "align right, span 1, grow");
-        this.window.add(this.finishButton, "align right, span 1, grow");
+        this.window.add(this.questionLabel, "cell 0 0 14 1, grow");
+        this.window.add(this.startButton, "cell 15 0, grow");
+        this.window.add(this.finishButton, "cell 16 0, grow");
 
-        /// Row 2: Answer buttons
+        /// Row 2-3: Answer buttons
+
+        this.window.add(this.answerButton1, "cell 4 1 5 1, grow");
+        this.window.add(this.answerButton2, "cell 10 1 5 1, grow");
+
+        this.window.add(this.answerButton3, "cell 4 2 5 1, grow");
+        this.window.add(this.answerButton4, "cell 10 2 5 1, grow");
 
         /// Bottom dock: Progress
 
         this.window.add(this.statusBar, "dock south");
+
+        /// Make it visible
+
+        this.window.setVisible(true);
     }
 }
