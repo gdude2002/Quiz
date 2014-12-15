@@ -10,9 +10,9 @@ public class Questions {
         this.questions = new HashMap<>();
 
         this.addQuestion(
-            "How many times Have Manchester United won the F.A. Cup?",  // Question
-            3,  // Correct index
-            "8", "9", "10", "11"  // Answers
+                "How many times Have Manchester United won the F.A. Cup?",  // Question
+                3,  // Correct index
+                "8", "9", "10", "11"  // Answers
         );
 
         this.addQuestion(
@@ -28,21 +28,21 @@ public class Questions {
         );
 
         this.addQuestion(
-                " Who holds the record for most Premier League goals??",  // Question
+                "Who holds the record for most Premier League goals?",  // Question
                 0,  // Correct index
                 "Alan Shearer", "Andrew Cole", "Wayne Rooney", "Thierry Henry"  // Answers
         );
 
         this.addQuestion(
-                " How many clubs have won the Champions League 5 or more times?",  // Question
+                "How many clubs have won the Champions League 5 or more times?",  // Question
                 2,  // Correct index
                 "2", "3", "4", "5"  // Answers
         );
 
         this.addQuestion(
-                "Which english club knocked both Liverpool F.C. and Chealsea F.C. out of the 2007/2008 FA Cup?",  // Question
+                "Which english club knocked both Liverpool F.C. and Chelsea F.C. out of the 2007/2008 FA Cup?",  // Question
                 3,  // Correct index
-                " Bradford", "Burnley", "Manchester United", "Barnsley"  // Answers
+                "Bradford", "Burnley", "Manchester United", "Barnsley"  // Answers
         );
     }
 
