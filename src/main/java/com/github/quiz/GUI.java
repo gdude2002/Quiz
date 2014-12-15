@@ -3,6 +3,8 @@ package com.github.quiz;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 public class GUI {
@@ -29,12 +31,12 @@ public class GUI {
     public GUI () {
         this.window = new JFrame();
         this.window.setLayout(new MigLayout(
-                "insets 10",
+                "insets 7",
                 "[grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow]"  // Please
         ));
         this.window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.window.setTitle("Quiz");
-        this.window.setSize(750, 164);
+        this.window.setSize(750, 156);
         this.window.setResizable(false);
         this.window.setLocationRelativeTo(null);
 
@@ -60,6 +62,8 @@ public class GUI {
         this.incorrectProgress = new JProgressBar(0, 10);
 
         // Set component defaults
+
+        this.statusBar.setBorder(new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
 
         this.finishButton.setEnabled(false);
 
