@@ -8,11 +8,10 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Storage {
     private Type token = new TypeToken<HashMap<String, HashMap<String, Object>>>(){}.getType();
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final File fh;
 
     public Storage() {
