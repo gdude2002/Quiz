@@ -6,7 +6,7 @@ import java.awt.EventQueue;
 /**
  * Application entry point
  */
-public class Main {
+class Main {
 
     public static void main (String ... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -17,7 +17,7 @@ public class Main {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                GUI gui = new GUI();
+                new GUI();
             }
         });
     }

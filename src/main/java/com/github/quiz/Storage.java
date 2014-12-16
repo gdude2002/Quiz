@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Storage {
-    private Type token = new TypeToken<HashMap<String, HashMap<String, Object>>>(){}.getType();
+class Storage {
+    private final Type token = new TypeToken<HashMap<String, HashMap<String, Object>>>(){}.getType();
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final File fh;
 
@@ -35,17 +35,17 @@ public class Storage {
         }
     }
 
-    public boolean save(HashMap<String, HashMap<String, Object>> questions) {
+    void save(HashMap<String, HashMap<String, Object>> questions) {
         if (!this.fh.exists()) {
             try {
                 boolean created = this.fh.createNewFile();
 
                 if (!created) {
-                   return false;
+                    return;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
+                return;
             }
         }
 
@@ -60,14 +60,12 @@ public class Storage {
             gson.toJson(questions, writer);
             writer.flush();
             writer.close();
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
-    public HashMap<String, HashMap<String, Object>> defaultQuestions() {
+    HashMap<String, HashMap<String, Object>> defaultQuestions() {
         HashMap<String, HashMap<String, Object>> questions = new HashMap<>();
 
         this.addQuestion(
@@ -414,8 +412,8 @@ public class Storage {
         return questions;
     }
 
-    public void addQuestion(
-            HashMap<String, HashMap<String, Object>> questions, String question, Integer correctIndex, String ... answers
+    void addQuestion(
+            HashMap<String, HashMap<String, Object>> questions, String question, Integer correctIndex, String... answers
     ) {
         HashMap<String, Object> questionMap = new HashMap<>();
         questionMap.put("answers", Arrays.asList(answers));

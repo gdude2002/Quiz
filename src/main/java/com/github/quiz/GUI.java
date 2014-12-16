@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-public class GUI {
+class GUI {
     // GUI components
     private final JFrame window;  // Main window
     private JPanel statusBar;  // Status bar
@@ -27,10 +27,6 @@ public class GUI {
     private JButton answerButton2;  // Second answer
     private JButton answerButton3;  // Third answer
     private JButton answerButton4;  // Fourth answer
-
-    private JProgressBar progressBar;  // Quiz progress bar
-    private JProgressBar correctProgress;  // Progress bar for correct answers
-    private JProgressBar incorrectProgress;  // Progress bar for incorrect answers
 
     private JPanel answerViewContainer;
 
@@ -47,16 +43,18 @@ public class GUI {
 
     // Icons
 
-    Icon currentIcon;
-    Icon inactiveIcon;
-    Icon rightIcon;
-    Icon wrongIcon;
+    private final Icon currentIcon;
+    private final Icon inactiveIcon;
+    private final Icon rightIcon;
+    private final Icon wrongIcon;
 
     // Our classes
 
-    private Questions questions;
-    private HashMap<String, HashMap<String, Object>> pickedQuestions;
+    private final Questions questions;
+    private final HashMap<String, HashMap<String, Object>> pickedQuestions;
     private String current;
+    private Integer currentNumber;
+    private Integer correctNumber;
 
     // Logic
 
@@ -68,7 +66,10 @@ public class GUI {
 
         this.questions = new Questions();
         this.pickedQuestions = new HashMap<>();
+
         this.current = null;
+        this.currentNumber = 0;
+        this.correctNumber = 0;
 
         this.window = new JFrame();
         this.window.setLayout(new MigLayout(
@@ -77,7 +78,7 @@ public class GUI {
         ));
         this.window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.window.setTitle("Quiz");
-        this.window.setSize(750, 206);
+        this.window.setSize(750, 194);
         this.window.setResizable(false);
         this.window.setLocationRelativeTo(null);
 
@@ -85,9 +86,67 @@ public class GUI {
         this.setHandlers();
     }
 
-    public void pickQuestions() {
+    void resetIcons() {
+        this.answerView1.setIcon(this.inactiveIcon);
+        this.answerView2.setIcon(this.inactiveIcon);
+        this.answerView3.setIcon(this.inactiveIcon);
+        this.answerView4.setIcon(this.inactiveIcon);
+        this.answerView5.setIcon(this.inactiveIcon);
+        this.answerView6.setIcon(this.inactiveIcon);
+        this.answerView7.setIcon(this.inactiveIcon);
+        this.answerView8.setIcon(this.inactiveIcon);
+        this.answerView9.setIcon(this.inactiveIcon);
+        this.answerView10.setIcon(this.inactiveIcon);
+    }
+
+    void setIcon(Integer index, Icon icon) {
+        JLabel label;
+
+        switch(index) {
+            case 0:
+            case 1:
+                label = this.answerView1;
+                break;
+            case 2:
+                label = this.answerView2;
+                break;
+            case 3:
+                label = this.answerView3;
+                break;
+            case 4:
+                label = this.answerView4;
+                break;
+            case 5:
+                label = this.answerView5;
+                break;
+            case 6:
+                label = this.answerView6;
+                break;
+            case 7:
+                label = this.answerView7;
+                break;
+            case 8:
+                label = this.answerView8;
+                break;
+            case 9:
+                label = this.answerView9;
+                break;
+            case 10:
+                label = this.answerView10;
+                break;
+            default:
+                return;
+        }
+
+        label.setIcon(icon);
+    }
+
+    void pickQuestions() {
         this.pickedQuestions.clear();
         this.current = null;
+        this.currentNumber = 0;
+        this.correctNumber = 0;
+        this.resetIcons();
 
         Random random = new Random();
         ArrayList<String> keys = new ArrayList<>(this.questions.getQuestions().keySet());
@@ -104,7 +163,7 @@ public class GUI {
         }
     }
 
-    public String pickQuestion(){
+    String pickQuestion(){
         Random random = new Random();
         ArrayList<String> keys = new ArrayList<>(this.pickedQuestions.keySet());
 
@@ -115,11 +174,15 @@ public class GUI {
         return keys.get(random.nextInt(keys.size()));
     }
 
-    public void initUI(){
-        // Initialize components
+    void initUI(){
+        /// Initialize components
         this.statusBar = new JPanel(new MigLayout("", "[grow][grow][grow]"));
 
         this.questionLabel = new JLabel("Click 'start' to begin!");
+        this.questionLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.questionLabel.setVerticalTextPosition(SwingConstants.CENTER);
+        this.questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.questionLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         this.startButton = new JButton("Start");
         this.finishButton = new JButton("Finish");
@@ -128,10 +191,6 @@ public class GUI {
         this.answerButton2 = new JButton("???");
         this.answerButton3 = new JButton("???");
         this.answerButton4 = new JButton("???");
-
-        this.correctProgress = new JProgressBar(0, 10);
-        this.progressBar = new JProgressBar(0, 10);
-        this.incorrectProgress = new JProgressBar(0, 10);
 
         this.answerView1 = new JLabel();
         this.answerView2 = new JLabel();
@@ -146,9 +205,14 @@ public class GUI {
 
         this.answerViewContainer = new JPanel(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow][grow][grow][grow]", "[grow]"));
 
-        // Set component defaults
+        /// Set component defaults
 
         this.statusBar.setBorder(new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
+        this.statusBar.setSize(600, 50);
+        this.statusBar.setBackground(Color.LIGHT_GRAY);
+
+        this.startButton.setBackground(Color.LIGHT_GRAY);
+        this.finishButton.setBackground(Color.LIGHT_GRAY);
 
         this.finishButton.setEnabled(false);
 
@@ -157,15 +221,9 @@ public class GUI {
         this.answerButton3.setEnabled(false);
         this.answerButton4.setEnabled(false);
 
-        this.correctProgress.setStringPainted(true);
-        this.progressBar.setStringPainted(true);
-        this.incorrectProgress.setStringPainted(true);
-
-        this.correctProgress.setForeground(Color.GREEN);
-        this.incorrectProgress.setForeground(Color.RED);
-
         this.answerViewContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
         this.answerViewContainer.setBackground(Color.LIGHT_GRAY);
+        this.answerViewContainer.setSize(600, 50);
 
         this.answerView1.setIcon(this.inactiveIcon);
         this.answerView2.setIcon(this.inactiveIcon);
@@ -178,12 +236,10 @@ public class GUI {
         this.answerView9.setIcon(this.inactiveIcon);
         this.answerView10.setIcon(this.inactiveIcon);
 
-        // Add components to their containers
+        /// Add components to their containers
 
-        this.statusBar.setSize(600, 50);
-        this.statusBar.add(this.correctProgress, "grow");
-        this.statusBar.add(this.progressBar, "grow");
-        this.statusBar.add(this.incorrectProgress, "grow");
+        this.statusBar.add(this.startButton, "width 20%, cell 0 0, align left");
+        this.statusBar.add(this.finishButton, "width 20%, cell 14 0, align right");
 
         this.answerViewContainer.add(this.answerView1, "align center");
         this.answerViewContainer.add(this.answerView2, "align center");
@@ -198,19 +254,21 @@ public class GUI {
 
         this.window.add(this.answerViewContainer, "dock north");
 
-        /// Row 1: Question label and start/finish buttons
+        /// Row 1: Question label
 
-        this.window.add(this.questionLabel, "cell 0 0 14 1, grow");
-        this.window.add(this.startButton, "cell 15 0, grow");
-        this.window.add(this.finishButton, "cell 16 0, grow");
+        this.window.add(this.questionLabel, "grow, span, align center, wrap");
 
         /// Row 2-3: Answer buttons
 
-        this.window.add(this.answerButton1, "cell 4 1 5 1, grow");
-        this.window.add(this.answerButton2, "cell 10 1 5 1, grow");
+        this.window.add(this.answerButton1, "gap left 97, width 50%");
+        this.window.add(this.answerButton2, "width 50%, wrap");
+        this.window.add(this.answerButton3, "gap left 97, width 50%");
+        this.window.add(this.answerButton4, "width 50%, wrap");
 
-        this.window.add(this.answerButton3, "cell 4 2 5 1, grow");
-        this.window.add(this.answerButton4, "cell 10 2 5 1, grow");
+        this.answerButton1.setSize(100, 50);
+        this.answerButton2.setSize(100, 50);
+        this.answerButton3.setSize(100, 50);
+        this.answerButton4.setSize(100, 50);
 
         /// Bottom dock: Progress
 
@@ -222,7 +280,7 @@ public class GUI {
     }
 
     @SuppressWarnings("unchecked")
-    public void nextQuestion() {
+    void nextQuestion() {
         this.current = pickQuestion();
 
         if (this.current == null) {
@@ -240,17 +298,15 @@ public class GUI {
             answerButton4.setEnabled(false);
 
             questionLabel.setText(String.format(
-                    "Correct: %s/%s. Click 'Start' to play again!", correctProgress.getValue(), progressBar.getValue()
+                    "Correct: %s/10. Click 'Start' to play again!", this.correctNumber
             ));
-
-            progressBar.setValue(0);
-            correctProgress.setValue(0);
-            incorrectProgress.setValue(0);
 
             return;
         }
 
         this.questionLabel.setText(this.current);
+        this.setIcon(this.currentNumber + 1, this.currentIcon);
+        this.currentNumber += 1;
         ArrayList<String> answers = (ArrayList<String>) this.pickedQuestions.get(this.current).get("answers");
         Collections.shuffle(answers);
 
@@ -260,33 +316,28 @@ public class GUI {
         this.answerButton4.setText(answers.get(3));
     }
 
-    public void checkQuestion(String answer) {
+    void checkQuestion(String answer) {
         String correct = (String) this.questions.getQuestions().get(this.current).get("correct");
 
         if (answer.equals(correct)) {
             // Correct!
-            this.correctProgress.setValue(this.correctProgress.getValue() + 1);
+            this.setIcon(this.currentNumber, this.rightIcon);
+            this.correctNumber += 1;
         } else {
             // Wrong!
-            this.incorrectProgress.setValue(this.incorrectProgress.getValue() + 1);
+            this.setIcon(this.currentNumber, this.wrongIcon);
         }
-
-        progressBar.setValue(progressBar.getValue() + 1);
 
         this.pickedQuestions.remove(this.current);
         this.nextQuestion();
     }
 
-    public void setHandlers() {
+    void setHandlers() {
         this.startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startButton.setEnabled(false);
                 finishButton.setEnabled(true);
-
-                progressBar.setValue(0);
-                correctProgress.setValue(0);
-                incorrectProgress.setValue(0);
 
                 pickQuestions();
                 nextQuestion();
@@ -314,13 +365,11 @@ public class GUI {
                 answerButton3.setEnabled(false);
                 answerButton4.setEnabled(false);
 
-                questionLabel.setText(String.format(
-                        "Correct: %s/%s. Click 'Start' to play again!", correctProgress.getValue(), progressBar.getValue()
-                ));
+                setIcon(currentNumber, inactiveIcon);
 
-                progressBar.setValue(0);
-                correctProgress.setValue(0);
-                incorrectProgress.setValue(0);
+                questionLabel.setText(String.format(
+                        "Correct: %s/10. Click 'Start' to play again!", correctNumber
+                ));
             }
         });
 
@@ -354,7 +403,7 @@ public class GUI {
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
-    protected ImageIcon createImageIcon(String path, String description) {
+    ImageIcon createImageIcon(String path, String description) {
         URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);

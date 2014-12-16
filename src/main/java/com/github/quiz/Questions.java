@@ -2,7 +2,7 @@ package com.github.quiz;
 
 import java.util.HashMap;
 
-public class Questions {
+class Questions {
     private final HashMap<String, HashMap<String, Object>> questions;
     private final Storage storage;
 
