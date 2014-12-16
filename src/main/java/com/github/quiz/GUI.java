@@ -7,6 +7,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +32,28 @@ public class GUI {
     private JProgressBar correctProgress;  // Progress bar for correct answers
     private JProgressBar incorrectProgress;  // Progress bar for incorrect answers
 
+    private JPanel answerViewContainer;
+
+    private JLabel answerView1;
+    private JLabel answerView2;
+    private JLabel answerView3;
+    private JLabel answerView4;
+    private JLabel answerView5;
+    private JLabel answerView6;
+    private JLabel answerView7;
+    private JLabel answerView8;
+    private JLabel answerView9;
+    private JLabel answerView10;
+
+    // Icons
+
+    Icon currentIcon;
+    Icon inactiveIcon;
+    Icon rightIcon;
+    Icon wrongIcon;
+
     // Our classes
+
     private Questions questions;
     private HashMap<String, HashMap<String, Object>> pickedQuestions;
     private String current;
@@ -39,6 +61,11 @@ public class GUI {
     // Logic
 
     public GUI () {
+        this.currentIcon = createImageIcon("/images/current.png", "current question");
+        this.inactiveIcon = createImageIcon("/images/inactive.png", "inactive question");
+        this.rightIcon = createImageIcon("/images/right.png", "correct question");
+        this.wrongIcon = createImageIcon("/images/wrong.png", "incorrect question");
+
         this.questions = new Questions();
         this.pickedQuestions = new HashMap<>();
         this.current = null;
@@ -50,7 +77,7 @@ public class GUI {
         ));
         this.window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.window.setTitle("Quiz");
-        this.window.setSize(750, 156);
+        this.window.setSize(750, 206);
         this.window.setResizable(false);
         this.window.setLocationRelativeTo(null);
 
@@ -106,6 +133,19 @@ public class GUI {
         this.progressBar = new JProgressBar(0, 10);
         this.incorrectProgress = new JProgressBar(0, 10);
 
+        this.answerView1 = new JLabel();
+        this.answerView2 = new JLabel();
+        this.answerView3 = new JLabel();
+        this.answerView4 = new JLabel();
+        this.answerView5 = new JLabel();
+        this.answerView6 = new JLabel();
+        this.answerView7 = new JLabel();
+        this.answerView8 = new JLabel();
+        this.answerView9 = new JLabel();
+        this.answerView10 = new JLabel();
+
+        this.answerViewContainer = new JPanel(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow][grow][grow][grow]", "[grow]"));
+
         // Set component defaults
 
         this.statusBar.setBorder(new MatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
@@ -124,12 +164,39 @@ public class GUI {
         this.correctProgress.setForeground(Color.GREEN);
         this.incorrectProgress.setForeground(Color.RED);
 
+        this.answerViewContainer.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+        this.answerViewContainer.setBackground(Color.LIGHT_GRAY);
+
+        this.answerView1.setIcon(this.inactiveIcon);
+        this.answerView2.setIcon(this.inactiveIcon);
+        this.answerView3.setIcon(this.inactiveIcon);
+        this.answerView4.setIcon(this.inactiveIcon);
+        this.answerView5.setIcon(this.inactiveIcon);
+        this.answerView6.setIcon(this.inactiveIcon);
+        this.answerView7.setIcon(this.inactiveIcon);
+        this.answerView8.setIcon(this.inactiveIcon);
+        this.answerView9.setIcon(this.inactiveIcon);
+        this.answerView10.setIcon(this.inactiveIcon);
+
         // Add components to their containers
 
         this.statusBar.setSize(600, 50);
         this.statusBar.add(this.correctProgress, "grow");
         this.statusBar.add(this.progressBar, "grow");
         this.statusBar.add(this.incorrectProgress, "grow");
+
+        this.answerViewContainer.add(this.answerView1, "align center");
+        this.answerViewContainer.add(this.answerView2, "align center");
+        this.answerViewContainer.add(this.answerView3, "align center");
+        this.answerViewContainer.add(this.answerView4, "align center");
+        this.answerViewContainer.add(this.answerView5, "align center");
+        this.answerViewContainer.add(this.answerView6, "align center");
+        this.answerViewContainer.add(this.answerView7, "align center");
+        this.answerViewContainer.add(this.answerView8, "align center");
+        this.answerViewContainer.add(this.answerView9, "align center");
+        this.answerViewContainer.add(this.answerView10, "align center");
+
+        this.window.add(this.answerViewContainer, "dock north");
 
         /// Row 1: Question label and start/finish buttons
 
@@ -284,5 +351,16 @@ public class GUI {
                 checkQuestion(answerButton4.getText());
             }
         });
+    }
+
+    /** Returns an ImageIcon, or null if the path was invalid. */
+    protected ImageIcon createImageIcon(String path, String description) {
+        URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 }
