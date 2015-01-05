@@ -1,35 +1,38 @@
+// Build script information
 buildscript {
-    repositories { jcenter() }
+    repositories { jcenter() }  // Add the jcenter repository
     dependencies {
+        // Add the ShadowJar Gradle plugin
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
     }
 }
 
+// Set up our gradle plugins
+
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.github.johnrengelman.shadow'  // ShadowJar plugin
 
-sourceCompatibility = 1.7
-version = '1.0'
-mainClassName = "com.github.quiz.Main"
+sourceCompatibility = 1.7  // We're compiling for Java 7
+version = '1.0'  // This is version 1.0 of our app
+mainClassName = "com.github.quiz.Main"  // And this is our main class
 
-repositories {
-    mavenCentral()
+repositories {  // Set up maven repositories for dependencies
+    mavenCentral()  // Maven Central
 
     maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"  // Sonatype's open source repo
     }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
-    compile group: 'com.miglayout', name: 'miglayout-swing', version: '5.0-SNAPSHOT'
-    compile group: 'com.jgoodies', name: 'looks', version: '2.2.2'
+dependencies {  // Libraries and dependencies for our app
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'  // Gson
+    compile group: 'com.miglayout', name: 'miglayout-swing', version: '5.0'  // MigLayout
+    compile group: 'com.jgoodies', name: 'looks', version: '2.2.2'  // JGoodies' Looks
 }
 
-jar {
+jar {  // Jar-specific settings
     manifest {
-        attributes 'Main-Class': 'com.github.quiz.Main'
+        attributes 'Main-Class': 'com.github.quiz.Main'  // Our main class for the manifest
     }
 }

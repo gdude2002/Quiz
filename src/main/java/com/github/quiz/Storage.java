@@ -9,39 +9,68 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Our main questions storage object. Not only does this deal with loading up the
+ * questions, but it also saves the default set to a json file if one doesn't already
+ * exist, and will load from there in the future.
+ *
+ * This allows someone to modify the set of questions, if they so please, by editing the
+ * questions.json file.
+ *
+ * We used Google Gson for this, as it makes this kind of thing a whole lot easier.
+ */
 class Storage {
+    // Because of the way Java does its strict types, we need one of these funky type tokens.
     private final Type token = new TypeToken<HashMap<String, HashMap<String, Object>>>(){}.getType();
+
+    // This is our Gson parser and reader. It does pretty printing to the file is human-readable.
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final File fh;
 
     public Storage() {
+        // Open the file.
+        // Seriously, that's all the constructor does.
         this.fh = new File("questions.json");
     }
 
+    /**
+     * Load up the questions, if possible.
+     * @return HashMap of questions, or null if there was an error.
+     */
     public HashMap<String, HashMap<String, Object>> load() {
-        if (!this.fh.exists()) {
-            // Insert defaults
+        if (!this.fh.exists()) {  // If the file doesn't exists..
+            // Insert defaults into it
             this.save(this.defaultQuestions());
         }
 
+        /**
+         * The below is one of Java's new try clauses. You're able to set up
+         * things like stream handlers, and they'll be closed and cleaned up
+         * when the try block is exited.
+         */
         try (InputStreamReader reader = new InputStreamReader(
                 new FileInputStream(this.fh),
                 Charset.forName("UTF-8"))
-            ) {
-            return this.gson.fromJson(reader, this.token);
+            ) {  // Java requires a lot of abstractions and wrapper classes. >.>
+            return this.gson.fromJson(reader, this.token);  // Simple enough, just load the data into a HashMap.
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return null;  // There was a problem, return null!
         }
     }
 
+    /**
+     * Save a set of questions to file.
+     * @param questions HashMap of questions to save
+     */
     void save(HashMap<String, HashMap<String, Object>> questions) {
         if (!this.fh.exists()) {
+            // If the file doesn't exist, create it
             try {
                 boolean created = this.fh.createNewFile();
 
                 if (!created) {
-                    return;
+                    return;  // If it couldn't be created, there's really not much we can do about it
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,29 +78,32 @@ class Storage {
             }
         }
 
-        try (
-                OutputStreamWriter writer = new OutputStreamWriter(
-
-                       new FileOutputStream(this.fh, false),
-
-                       Charset.forName("UTF-8")
-                )
-        ) {
-            gson.toJson(questions, writer);
-            writer.flush();
-            writer.close();
+        try (OutputStreamWriter writer = new OutputStreamWriter(
+               new FileOutputStream(this.fh, false),
+               Charset.forName("UTF-8"))
+            ) {
+            gson.toJson(questions, writer);  // Write the questions to the stream
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Return a HashMap of default questions.
+     *
+     * We did this in a function so that we wouldn't be wasting memory
+     * when a questions file already exists (meaning we wouldn't need
+     * to get the defaults from here).
+     *
+     * @return HashMap of the default questions
+     */
     HashMap<String, HashMap<String, Object>> defaultQuestions() {
         HashMap<String, HashMap<String, Object>> questions = new HashMap<>();
 
         this.addQuestion(
-                questions,
+                questions,  // The map to add the question to
                 "How many times Have Manchester United won the F.A. Cup?",  // Question
-                3,  // Correct index
+                3,  // Correct index (zero-indexed)
                 "8", "9", "10", "11"  // Answers
         );
 
@@ -412,6 +444,14 @@ class Storage {
         return questions;
     }
 
+    /**
+     * Add a question to a HashMap.
+     *
+     * @param questions The HashMap to add to
+     * @param question The question, as a string
+     * @param correctIndex The correct answer as a zero-indexed array index
+     * @param answers The array of possible answers
+     */
     void addQuestion(
             HashMap<String, HashMap<String, Object>> questions, String question, Integer correctIndex, String... answers
     ) {
@@ -419,6 +459,8 @@ class Storage {
         questionMap.put("answers", Arrays.asList(answers));
         questionMap.put("correct", answers[correctIndex]);
 
+        // As we're passing the map in by reference, we can just add the
+        // question to it and not return anything.
         questions.put(question, questionMap);
     }
 }
