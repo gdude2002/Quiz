@@ -383,7 +383,7 @@ class Storage {
                 questions,
                 "What is the Zodiac sign for someone born on the 15th of May?",
                 2,
-                "Aquirius", "Cancer", "Taurus", "Gemini"
+                "Aquarius", "Cancer", "Taurus", "Gemini"
 
         );
         this.addQuestion(
